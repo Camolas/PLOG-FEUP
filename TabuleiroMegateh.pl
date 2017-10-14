@@ -44,7 +44,8 @@ setNaColuna(Pos, [X|Resto], Peca, [X|NovoResto]):-
 
 %---------------------------------------------------------------
 printBoard(Board) :-
-	
+
+	displayColumns,
 	printBorders,
 	printRowByRow(Board),
 	printBlackLine.
@@ -82,6 +83,14 @@ boardesign:-put_code(218),hdesign,hdesign,put_code(191).
 /*
 hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(196),put_code(223),put_code(223),put_code(223).
 */
+
+displayColumns :- 
+write('   '),put_code(218),sizehozletter,sizehozletter,sizehozletter,sizehozletter,sizehozletter,put_code(191),
+nl,put_code(179),write('   a      b      c      d   '),put_code(180),nl,nl.
+
+sizehozletter :- put_code(196),put_code(196),put_code(196),put_code(196),put_code(196),put_code(196).
+
 hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(196),put_code(223),put_code(223),put_code(223).
+
 /*put_code(223),put_code(223),
 put_code(220),put_code(220),put_code(178),put_code(219),put_code(196),put_code(220),put_code(220).*/
