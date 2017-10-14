@@ -79,6 +79,9 @@ printSingleRow([Cell|More]):-
 printBorders :- put_code(201),boardesign,boardesign, nl.
 
 boardesign:-put_code(218),hdesign,hdesign,put_code(191).
-hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),,put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(196),put_code(223),put_code(223),put_code(223).
+/*
+hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(196),put_code(223),put_code(223),put_code(223).
+*/
+hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),put_code(196),put_code(223),put_code(223),put_code(223).
 /*put_code(223),put_code(223),
 put_code(220),put_code(220),put_code(178),put_code(219),put_code(196),put_code(220),put_code(220).*/
