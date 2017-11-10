@@ -43,6 +43,14 @@ setNaColuna(Pos, [X|Resto], Peca, [X|NovoResto]):-
 	X = c */
 
 %---------------------------------------------------------------
+initialBoard :-
+	   [[s, s, s, s],
+       [s, s, s, s],
+       [s, s, s, s],
+       [s, s, s, s],
+       [s, s, s, s]]).
+
+
 printBoard(Board) :-
 
 	displayColumns,
@@ -86,7 +94,7 @@ hdesign:- put_code(205),put_code(205),put_code(205),put_code(205),put_code(205),
 
 displayColumns :- 
 write('   '),put_code(218),sizehozletter,sizehozletter,sizehozletter,sizehozletter,sizehozletter,put_code(191),
-nl,put_code(179),write('   a      b      c      d   '),put_code(180),nl,nl.
+nl,put_code(179),write('   a      b      c      d   '),put_code(179),nl,nl.
 
 sizehozletter :- put_code(196),put_code(196),put_code(196),put_code(196),put_code(196),put_code(196).
 
