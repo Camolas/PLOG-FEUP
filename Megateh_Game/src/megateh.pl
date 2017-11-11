@@ -8,20 +8,24 @@
 :-include('gameSpecs.pl').
 :-include('misc.pl').
 :-include('humanToPlay.pl').
+:-include('megatehLogic.pl').
  
 
 megateh:-
         print_main,
         repeat,
         read(Ans),
+        get_return_key,
         parse_answer(Ans),
         !.
 
 player(player_1).
 player(player_2).
+player(machine).
 
 player_userName(player_1, 'PLAYER 1').
 player_userName(player_2, 'PLAYER 2').
+player_userName(machine, 'MACHINE').
 
 play(Game):-
         get_mode(Game, Mode),

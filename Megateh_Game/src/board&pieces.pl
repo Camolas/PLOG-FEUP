@@ -13,14 +13,14 @@ char(empty, ' ').
 height(empty,0).
 height(flat,1).
 height(holed,1).
-height(dF,2).
-height(dH,2).
+height(doubleFlat,2).
+height(doubleHoled,2).
 
 empty_board([[empty,empty,empty,empty],
-               [empty,empty,empty,empty],
-               [empty,empty,empty,empty],
-               [empty,empty,empty,empty]
-              ]).
+             [empty,empty,empty,empty],
+             [empty,empty,empty,empty],
+             [empty,empty,empty,empty]
+            ]).
 
 empty_height([[0,0,0,0],
               [0,0,0,0],
@@ -60,10 +60,6 @@ draw_line([Head|Tail]) :-
         write('   |   '), write(S), 
         draw_line(Tail).
 
-get_piece(0,Col,[Head|_],Char):-
-        get_list_element(Col,Head,Char).
+get_piece_type(Char, Meaning):- char(Meaning,Char).
 
-get_piece(Row,Col,[_|Tail], Char):-
-        Row > 0,
-        NewRow is Row - 1,
-        get_piece(NewRow,Col,Tail,Char).
+get_piece_height(Piece, Height):- height(Piece,Height).
