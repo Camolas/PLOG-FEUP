@@ -1,26 +1,24 @@
 humanTurn(Game,NextGame):-
-       % repeat,
+        repeat,
         get_pieceBoard(Game,PieceBoard),
         display_board(PieceBoard,4),
         display_actualInfo(Game),nl,
-        ask_position(SrcRow,SrcCol),
+        ask_position(Row, Col),
+        nl, write(Row), nl, write(Col),nl,
         ask_piece(NewPiece),
-        make_move(SrcRow,SrcCol,NewPiece,Game,NextGame),
+        move(Row,Col,NewPiece,Game,NextGame),
         !.
 
 ask_position(Row, Col):-
         write('Where do you want to put your piece? (e.g a1)'),nl,
-        get_coords(Row, Col).
+        get_coords(Col,Row).
 
 ask_piece(Piece):-
-        write('And what piece? '),nl,
+        write('And what piece?'),nl,
+        write('       f for flat'),nl,
+        write('       h for holed'),nl,
+        write('       dF for double-flat'),nl,
+        write('       dH for double-holed.'),nl,
         read(Piece),
         get_return_key.
 
-make_move(R,C,NP,G,NG):-
-        write(R),
-        write(C),
-        write(NP),
-        write(G),
-        write(NG).
-        

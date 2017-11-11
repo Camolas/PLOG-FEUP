@@ -3,7 +3,8 @@ print_main:-
         write('  Please choose your game mode: '), nl,
         write('  1 - Human vs. Human'), nl,
         write('  2 - Human vs. Computer'), nl,
-        write('  3 - Computer vs. Computer'), nl, nl.
+        write('  3 - Computer vs. Computer'), nl,
+        write('  0 - Exit Game'),nl.
 
 parse_answer(Input):-
         Input == 1, 
@@ -24,6 +25,11 @@ parse_answer(Input):-
         write('        Machine VS Machine'),nl,nl,
         machine_machine(Game), 
         play(Game),
+        !.
+parse_answer(Input):-
+        Input == 0, 
+        write('Exiting...'), nl,
+        halt(0),
         !.
 
 display_actualInfo(Game):-
