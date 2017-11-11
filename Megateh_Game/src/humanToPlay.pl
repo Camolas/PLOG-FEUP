@@ -4,7 +4,8 @@ humanTurn(Game,NextGame):-
         display_board(PieceBoard,4),
         display_actualInfo(Game),nl,
         ask_position(Row, Col),
-        nl, write(Row), nl, write(Col),nl,
+        nl,write('Row: '),write(Row),nl,
+        write('Col: '), write(Col),nl,
         ask_piece(NewPiece),
         move(Row,Col,NewPiece,Game,NextGame),
         !.
@@ -14,11 +15,18 @@ ask_position(Row, Col):-
         get_coords(Col,Row).
 
 ask_piece(Piece):-
+        %repeat,
         write('And what piece?'),nl,
         write('       f for flat'),nl,
         write('       h for holed'),nl,
-        write('       dF for double-flat'),nl,
-        write('       dH for double-holed.'),nl,
-        read(Piece),
+        write('       ff for double-flat'),nl,
+        write('       hh for double-holed.'),nl,
+        read(TempPiece),
+        ((TempPiece == 'f' ; TempPiece == 'h') -> Piece = TempPiece
+        ;       (TempPiece == 'ff' -> Piece = 'F'
+                ;    (TempPiece == 'hh' -> Piece = 'H')
+                )
+        ),
+           
         get_return_key.
 

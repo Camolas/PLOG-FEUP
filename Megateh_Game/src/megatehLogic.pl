@@ -5,7 +5,7 @@ move(Row,Col,Piece,Game,NextGame):-
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
-        nl, write('piece put'), nl,
+        %nl, write('piece put'), nl,
         update_piece_info(Game, Piece, GameInfo),
         %nl, write('info updated'), nl,
         set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
@@ -15,6 +15,7 @@ move(Row,Col,Piece,Game,NextGame):-
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
         %nl, write(NextNumPiecesBoard), nl,
         change_player(GameInfoPHNP, NextGame).
+        %nl, write(NextGame),nl.
 
 get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard):-
         get_pieceBoard(Game, PieceBoard),
@@ -26,10 +27,10 @@ check(R,C,P,Pb,NPb):-
         check_number(R,C,NPb).
 
 check_type(R,C,P,Pb):-
-        (P == 'h' ; P == 'f' ; P =='dF' ; P == 'dH'),
+        (P == 'h' ; P == 'f' ; P =='F' ; P == 'H'),
         search_board(R,C,Pb,PieceThere),
-        PieceThere \= 'dF',
-        PieceThere \= 'dH'.
+        PieceThere \= doubleFlat,
+        PieceThere \= doubleHoled.
 
 
 check_number(R,C,NPb):-

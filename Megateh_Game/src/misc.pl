@@ -16,15 +16,15 @@ get_return_key:-
         get_code(_).
 
 get_coords(Col,Row):-
-        get_integer(R),
         get_integer(C),
+        get_integer(R),
         get_return_key,
-        Row is 51 - R,
+        Row is R,
         Col is C.%-49.
 
 get_integer(Value):-
         get_code(TempV),
-        Value is TempV - 49.
+        Value is TempV.
        
 
 search_board(0, Col, [Head|_], Piece):-

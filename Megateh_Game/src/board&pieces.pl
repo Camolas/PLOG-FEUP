@@ -6,8 +6,8 @@ piece(empty).
 
 char(flat,'f').
 char(holed, 'h').
-char(doubleFlat, 'dF').
-char(doubleHoled, 'dH').
+char(doubleFlat, 'F').
+char(doubleHoled, 'H').
 char(empty, ' ').
 
 height(empty,0).
