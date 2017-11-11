@@ -47,6 +47,12 @@ display_actualInfo(Game):-
         write('     Double: '), write(NumDoublePieces), nl, nl.
 
 
+set_game_winner(Game,NextGame):-
+        get_playerToPlay(Game,ActualPlayer),
+        set_state(Game,'yes',NextGame),
+        write(ActualPlayer),
+        write(' Won!'),nl,true,!.
+
        
        
        

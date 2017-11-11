@@ -31,8 +31,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = hh,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         humanTurn(Game, NextGame),
         play(NextGame).
@@ -41,8 +41,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = hm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         get_playerToPlay(Game, PlayerToPlay),
         PlayerToPlay == player_1,
@@ -55,8 +55,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = hm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         get_playerToPlay(Game, PlayerToPlay),
         PlayerToPlay == player_2,
@@ -68,8 +68,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = mm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         machineTurn(Game, NextGame),
         play(NextGame).
@@ -77,8 +77,8 @@ play(Game):-
 play(Game):-
         get_pieceBoard(Game,PieceBoard),
         display_board(PieceBoard,4),
-        get_winner(Game,Winner),
-        Winner == yes,
+        get_state(Game,State),
+        State == yes,
         true.
 
 

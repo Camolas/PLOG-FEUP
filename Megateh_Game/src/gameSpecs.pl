@@ -59,11 +59,11 @@ set_playerToPlay(Game, NextPlayer, NewGame):-
 
 
 
-get_winner(Game, Winner):-
-        search_list(4,Game,Winner).
+get_state(Game, State):-
+        search_list(4,Game,State).
 
-set_winner(Game, Winner, NewGame):-
-        change_list_at(4, Game, Winner, NewGame).
+set_state(Game, State, NewGame):-
+        change_list_at(4, Game, State, NewGame).
 
 
 

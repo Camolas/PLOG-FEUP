@@ -15,16 +15,16 @@ change_list_at(Index,[Head|ActualTail], NewInput, [Head|NextTail]):-
 get_return_key:-
         get_code(_).
 
-get_coords(Col,Row):-
+get_coords(Row,Col):-
         get_integer(C),
         get_integer(R),
         get_return_key,
-        Row is R,
-        Col is C.%-49.
+        Row is 4-R,
+        Col is C-49.
 
 get_integer(Value):-
         get_code(TempV),
-        Value is TempV.
+        Value is TempV-48.
        
 
 search_board(0, Col, [Head|_], Piece):-
@@ -51,7 +51,8 @@ change_player(Game,NextGame):-
          ActualPlayer == player_2 -> NextPlayer = player_1),
         set_playerToPlay(Game,NextPlayer,NextGame).
 
-                       
+get_board_row(Row,Board,RowList):-
+        nth0(Row,Board,RowList).                  
                                                      
 
 
