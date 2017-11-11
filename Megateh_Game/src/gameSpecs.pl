@@ -112,10 +112,10 @@ update_piece_info(Game, Piece, NGame):-
         set_numHPieces(Game, Next_nH, NGame).
 
 update_piece_info(Game, Piece, NGame):-
-        (Piece == 'df' ; Piece == 'dH'),
+        (Piece == 'F' ; Piece == 'H'),
         get_numDoublePieces(Game, N_d),
         N_d > 0,
         Next_nD is N_d - 1,
-        set_numFPieces(Game, Next_nD, NGame).
+        set_numDPieces(Game, Next_nD, NGame).
 
 
