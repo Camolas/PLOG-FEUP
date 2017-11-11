@@ -46,13 +46,39 @@ change_cell(Row, Col, [Head|ActualTail], NewInput, [Head|NextTail]):-
 
 
 change_player(Game,NextGame):-
+        get_mode(Game,Mode),
+        Mode == hh,
         get_playerToPlay(Game,ActualPlayer),
         (ActualPlayer == player_1 -> NextPlayer = player_2;
          ActualPlayer == player_2 -> NextPlayer = player_1),
         set_playerToPlay(Game,NextPlayer,NextGame).
 
+change_player(Game,NextGame):-
+        get_mode(Game,Mode),
+        Mode == hm,
+        get_playerToPlay(Game,ActualPlayer),
+        (ActualPlayer == player_1 -> NextPlayer = machine;
+         ActualPlayer == machine -> NextPlayer = player_1),
+        set_playerToPlay(Game,NextPlayer,NextGame).
+
+change_player(Game,NextGame):-
+        get_mode(Game,Mode),
+        Mode == mm,
+        set_playerToPlay(Game,machine,NextGame).
+
 get_board_row(Row,Board,RowList):-
         nth0(Row,Board,RowList).                  
-                                                     
+                                       
+initialize_random_seed:-
+        now(Usec), Seed is Usec mod 30269,
+        getrand(random(X, Y, Z, _)),
+        setrand(random(Seed, X, Y, Z)), !.
+
+parse_piece(TempPiece,Piece):-
+        ((TempPiece == 'f' ; TempPiece == 'h') -> Piece = TempPiece
+        ;       (TempPiece == 'ff' -> Piece = 'F'
+                ;    (TempPiece == 'hh' -> Piece = 'H')
+                )
+        ).              
 
 

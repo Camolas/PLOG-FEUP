@@ -20,7 +20,7 @@ move(Row,Col,Piece,Game,NextGame):-
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
         update_piece_info(Game, Piece, GameInfo),
-        %check_draw(GameInfo, NextGame),!,
+        \+check_draw(GameInfo, NextGame),!,
         set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
         set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
@@ -41,12 +41,14 @@ check_type(R,C,P,Pb):-
         search_board(R,C,Pb,PieceThere),
         PieceThere \= doubleFlat,
         PieceThere \= doubleHoled.
-        %nl, write('You cannot put any piece on top of a double one! Try again'),nl,nl.
+       %;
+       % nl, write('You cannot put any piece on top of a double one! Try again'),nl,nl.
 
 
 check_number(R,C,NPb):-
         search_board(R,C,NPb,HowManyThere),
         HowManyThere < 2.
+        %;
         %nl,write('There are already 2 pieces in that cell. Try again!'),nl,nl.
 
 put_piece(Row,Col,Piece,
@@ -121,12 +123,11 @@ check_row(Row):-
 
 
 check_type([Pivot,Second,Third,Fourth]):-
-        char(Pivot,Char),
-        get_piece_type(Char,Type),
-        Type \= empty,
-        char(Second,Char),
-        char(Third, Char),
-        char(Fourth, Char).
+        mainType(Pivot,MainType),
+        MainType \= empty,
+        mainType(Second,MainType),
+        mainType(Third,MainType),
+        mainType(Fourth,MainType).
         
 
 check_height([Pivot,Second, Third, Fourth]):-

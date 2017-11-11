@@ -10,6 +10,13 @@ char(doubleFlat, 'F').
 char(doubleHoled, 'H').
 char(empty, ' ').
 
+mainType(flat,flatMain).
+mainType(doubleFlat,flatMain).
+mainType(holed,holedMain).
+mainType(doubleHoled,holedMain).
+mainType(empty,empty).
+
+
 height(empty,0).
 height(flat,1).
 height(holed,1).

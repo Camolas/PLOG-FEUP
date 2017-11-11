@@ -9,9 +9,11 @@
 :-include('misc.pl').
 :-include('humanToPlay.pl').
 :-include('megatehLogic.pl').
+:-include('machineToPlay.pl').
  
 
 megateh:-
+        initialize_random_seed,
         print_main,
         repeat,
         read(Ans),
@@ -50,7 +52,7 @@ play(Game):-
         humanTurn(Game, NextGame),
         play(NextGame).
 
-%still to implement
+
 play(Game):-
         get_mode(Game, Mode),
         Mode = hm,
@@ -59,8 +61,9 @@ play(Game):-
         State \= yes,
         
         get_playerToPlay(Game, PlayerToPlay),
-        PlayerToPlay == player_2,
+        PlayerToPlay == machine,
        
+   
         machineTurn(Game, NextGame), 
         play(NextGame).
 
@@ -71,6 +74,10 @@ play(Game):-
         get_state(Game,State),
         State \= yes,
         
+        get_playerToPlay(Game, PlayerToPlay),
+        PlayerToPlay == machine,
+        
+    
         machineTurn(Game, NextGame),
         play(NextGame).
 

@@ -13,18 +13,13 @@ ask_position(Row, Col):-
         get_coords(Row,Col).
 
 ask_piece(Piece):-
-        %repeat,
         write('And what piece?'),nl,
         write('       f for flat'),nl,
         write('       h for holed'),nl,
         write('       ff for double-flat'),nl,
         write('       hh for double-holed.'),nl,
+        repeat,
         read(TempPiece),
-        ((TempPiece == 'f' ; TempPiece == 'h') -> Piece = TempPiece
-        ;       (TempPiece == 'ff' -> Piece = 'F'
-                ;    (TempPiece == 'hh' -> Piece = 'H')
-                )
-        ),
-           
+        parse_piece(TempPiece,Piece),
         get_return_key.
 
