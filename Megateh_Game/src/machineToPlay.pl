@@ -1,8 +1,5 @@
 machineTurn(Game,NextGame):-
-        
-        get_pieceBoard(Game,PieceBoard),
-        get_numPiecesBoard(Game, NPBoard),
-        get_heightBoard(Game,HeightBoard),
+        get_actual_board(Game, PieceBoard, HeightBoard, NPBoard),
         display_board(PieceBoard,4,NPBoard,HeightBoard),
         repeat,
         display_actualInfo(Game),

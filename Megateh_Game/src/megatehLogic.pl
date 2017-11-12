@@ -1,15 +1,21 @@
 move(Row,Col,Piece,Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
+        
         check_move(Row,Col,Piece,PieceBoard,NumPiecesBoard),
+        
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
+        
         update_piece_info(Game, Piece, GameInfo),
         \+check_draw(GameInfo, NextGame),
+        
         set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
         set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
+        
         check_winner(NextPieceBoard,GameInfoPHNP,GameInfoPHNPWinner),
+        
         change_player(GameInfoPHNPWinner, NextGame).
 
 
@@ -32,21 +38,24 @@ get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard):-
         get_heightBoard(Game, HeightBoard),
         get_numPiecesBoard(Game, NumPiecesBoard).
 
+
+
 check_move(R,C,P,Pb,NPb):-
         check_type(R,C,P,Pb),
         check_number(R,C,NPb).
 
+
 check_type(R,C,P,Pb):-
-       ( (P == 'h' ; P == 'f' ; P =='F' ; P == 'H'),
+        (P == 'h' ; P == 'f' ; P =='F' ; P == 'H'),
         search_board(R,C,Pb,PieceThere),
         PieceThere \= doubleFlat,
-        PieceThere \= doubleHoled).
+        PieceThere \= doubleHoled.
+
      
-
-
 check_number(R,C,NPb):-
-        (search_board(R,C,NPb,HowManyThere),
-        HowManyThere < 2).
+        search_board(R,C,NPb,HowManyThere),
+        HowManyThere < 2.
+
 
 put_piece(Row,Col,Piece,
           PieceBoard, HeightBoard, NumPiecesBoard,

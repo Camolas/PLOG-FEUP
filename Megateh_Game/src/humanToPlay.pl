@@ -1,8 +1,5 @@
 humanTurn(Game,NextGame):-
-        
-        get_pieceBoard(Game,PieceBoard),
-        get_numPiecesBoard(Game, NPBoard),
-        get_heightBoard(Game,HeightBoard),
+        get_actual_board(Game, PieceBoard, HeightBoard, NPBoard),
         display_board(PieceBoard,4,NPBoard,HeightBoard),
         repeat,
         display_actualInfo(Game),nl,
@@ -18,6 +15,7 @@ ask_position(Row, Col):-
         get_return_key,
         write('Col: '),
         get_col(Col),
+        integer(TempRow),
         Row is 4 - TempRow,
         parse_position(Row,Col).
 

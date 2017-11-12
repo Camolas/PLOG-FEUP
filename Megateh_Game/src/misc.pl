@@ -17,7 +17,7 @@ get_return_key:-
 
 
 get_col(Col):-
-        read(Input),
+        get_char(Input),
         get_return_key,
         char_number(Input,Col).
 
