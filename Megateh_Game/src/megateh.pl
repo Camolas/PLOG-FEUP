@@ -9,9 +9,11 @@
 :-include('misc.pl').
 :-include('humanToPlay.pl').
 :-include('megatehLogic.pl').
+:-include('machineToPlay.pl').
  
 
 megateh:-
+        initialize_random_seed,
         print_main,
         repeat,
         read(Ans),
@@ -31,8 +33,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = hh,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         humanTurn(Game, NextGame),
         play(NextGame).
@@ -41,8 +43,8 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = hm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         get_playerToPlay(Game, PlayerToPlay),
         PlayerToPlay == player_1,
@@ -50,17 +52,18 @@ play(Game):-
         humanTurn(Game, NextGame),
         play(NextGame).
 
-%still to implement
+
 play(Game):-
         get_mode(Game, Mode),
         Mode = hm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
         get_playerToPlay(Game, PlayerToPlay),
-        PlayerToPlay == player_2,
+        PlayerToPlay == machine,
        
+   
         machineTurn(Game, NextGame), 
         play(NextGame).
 
@@ -68,17 +71,21 @@ play(Game):-
         get_mode(Game, Mode),
         Mode = mm,
         
-        get_winner(Game,Winner),
-        Winner \= yes,
+        get_state(Game,State),
+        State \= yes,
         
+        get_playerToPlay(Game, PlayerToPlay),
+        PlayerToPlay == machine,
+        
+    
         machineTurn(Game, NextGame),
         play(NextGame).
 
 play(Game):-
         get_pieceBoard(Game,PieceBoard),
         display_board(PieceBoard,4),
-        get_winner(Game,Winner),
-        Winner == yes,
+        get_state(Game,State),
+        State == yes,
         true.
 
 

@@ -40,12 +40,18 @@ display_actualInfo(Game):-
         get_numHPieces(Game, NumHPieces),
         get_numDoublePieces(Game, NumDoublePieces),
         
-        nl,write(PlayerUserName),write(', ITs YOUR TURN TO PLAY! '),nl,
+        nl,write(PlayerUserName),write(', IT\'S YOUR TURN TO PLAY! '),nl,
         write('Pieces still to play: '), nl,
         write('Flat: '), write(NumFPieces),
         write('     Holed: '), write(NumHPieces),
         write('     Double: '), write(NumDoublePieces), nl, nl.
 
+
+set_game_winner(Game,NextGame):-
+        get_playerToPlay(Game,ActualPlayer),
+        set_state(Game,'yes',NextGame),
+        write(ActualPlayer),
+        write(' Won!'),nl,true,!.
 
        
        

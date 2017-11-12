@@ -1,21 +1,31 @@
 move(Row,Col,Piece,Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
         check(Row,Col,Piece,PieceBoard,NumPiecesBoard),
-        %nl, write('passed the test'), nl,
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
-        %nl, write('piece put'), nl,
         update_piece_info(Game, Piece, GameInfo),
-        %nl, write('info updated'), nl,
+        \+check_draw(GameInfo, NextGame),
         set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
-        %nl, write(NextPieceBoard), nl,
         set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
-        %nl, write(NextHeightBoard), nl,
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
-        %nl, write(NextNumPiecesBoard), nl,
+        check_winner(NextPieceBoard,GameInfoPHNP,GameInfoPHNPWinner),
+        change_player(GameInfoPHNPWinner, NextGame).
+
+
+move(Row,Col,Piece,Game,NextGame):-
+        get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
+        check(Row,Col,Piece,PieceBoard,NumPiecesBoard),
+        put_piece(Row,Col,Piece,
+                  PieceBoard, HeightBoard, NumPiecesBoard,
+                  NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
+        update_piece_info(Game, Piece, GameInfo),
+        \+check_draw(GameInfo, NextGame),!,
+        set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
+        set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
+        set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
         change_player(GameInfoPHNP, NextGame).
-        %nl, write(NextGame),nl.
+
 
 get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard):-
         get_pieceBoard(Game, PieceBoard),
@@ -31,11 +41,15 @@ check_type(R,C,P,Pb):-
         search_board(R,C,Pb,PieceThere),
         PieceThere \= doubleFlat,
         PieceThere \= doubleHoled.
+       %;
+       % nl, write('You cannot put any piece on top of a double one! Try again'),nl,nl.
 
 
 check_number(R,C,NPb):-
         search_board(R,C,NPb,HowManyThere),
         HowManyThere < 2.
+        %;
+        %nl,write('There are already 2 pieces in that cell. Try again!'),nl,nl.
 
 put_piece(Row,Col,Piece,
           PieceBoard, HeightBoard, NumPiecesBoard,
@@ -54,7 +68,82 @@ put_piece(Row,Col,Piece,
                 change_cell(Row, Col, PieceBoard, Type, NextPB),
                 change_cell(Row, Col, HeightBoard, NextHeight, NextHB),
                 change_cell(Row, Col, NumPiecesBoard, NextNum, NextNPB).
+
+check_draw(Game,NextGame):-
+        get_numFPieces(NextGame, FPieces),
+        get_numHPieces(NextGame, HPieces),
+        get_numDoublePieces(NextGame, DPieces),
+        FPieces == 0, HPieces == 0, DPieces == 0,
+        set_state(Game,'yes',NextGame),
+        nl,write('It\'s a draw!'),nl.
         
+        
+%%%%%%%%%%%% 4-in-a-row horizontal
+
+check_winner(Board,Game,NextGame):-
+        four_line(Board),
+        set_game_winner(Game,NextGame).
+
+%%%%%%%%%%% 4-in-a-row vertical
+check_winner(Board,Game,NextGame):-
+        transpose(Board,TransBoard),
+        four_line(TransBoard),
+        set_game_winner(Game,NextGame).
+
+%%%%%%%%%%% 4-in-a-row diagonal
+check_winner(Board,Game,NextGame):-
+        get_diagonal(Board,0,Diagonal),
+        check_row(Diagonal),
+        set_game_winner(Game,NextGame).
+
+check_winner(Board,Game,NextGame):-
+        reverse(Board,RevBoard),
+        get_diagonal(RevBoard,0,Diagonal),
+        check_row(Diagonal),
+        set_game_winner(Game,NextGame).
+
+
+get_diagonal([],_,[]).
+get_diagonal([Head|Tail], Col, [Piece|Rest]):-
+        search_list(Col,Head,TempPiece),
+        Piece = TempPiece,
+        NextCol is Col + 1,
+        get_diagonal(Tail,NextCol,Rest).
+
+   
+four_line([]):- fail.
+
+four_line([Row|NextRows]):-
+        check_row(Row);
+        four_line(NextRows).
+
+check_row(Row):-
+        check_type(Row);
+        check_height(Row).
+
+
+check_type([Pivot,Second,Third,Fourth]):-
+        mainType(Pivot,MainType),
+        MainType \= empty,
+        mainType(Second,MainType),
+        mainType(Third,MainType),
+        mainType(Fourth,MainType).
+        
+
+check_height([Pivot,Second, Third, Fourth]):-
+        height(Pivot,Height),
+        Height \= 0,
+        height(Second,Height),
+        height(Third,Height),
+        height(Fourth,Height).
+        
+        
+
+        
+        
+        
+        
+           
         
         
         
