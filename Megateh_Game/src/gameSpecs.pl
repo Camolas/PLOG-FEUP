@@ -12,25 +12,25 @@ human_human(Game):-
         
         empty_numPieces(NumPiecesBoard),
         
-        Game = [PieceBoard, HeightBoard, NumPiecesBoard, player_1, no, hh, 8 ,8, 8].
+        Game = [PieceBoard, HeightBoard, NumPiecesBoard, player_1, no, hh, 8 ,8, 8, 0].
 
-human_machine(Game):-
+human_machine(Game, Level):-
         empty_board(PieceBoard),
        
         empty_height(HeightBoard),
         
         empty_numPieces(NumPiecesBoard),
         
-        Game = [PieceBoard, HeightBoard, NumPiecesBoard, player_1, no, hm, 8 ,8, 8].
+        Game = [PieceBoard, HeightBoard, NumPiecesBoard, player_1, no, hm, 8 ,8, 8, Level].
 
-machine_machine(Game):-
+machine_machine(Game, Level):-
         empty_board(PieceBoard),
         
         empty_height(HeightBoard),
         
         empty_numPieces(NumPiecesBoard),
         
-        Game = [PieceBoard, HeightBoard, NumPiecesBoard, machine, no, mm, 8 ,8, 8].
+        Game = [PieceBoard, HeightBoard, NumPiecesBoard, machine, no, mm, 8 ,8, 8, Level].
 
 %%% gets the piece board from the game
 get_pieceBoard(Game,PieceBoard):-
@@ -109,6 +109,13 @@ get_numDoublePieces(Game, NumDoublePieces):-
 set_numDPieces(Game, NumDPieces, NewGame):-
         change_list_at(8, Game, NumDPieces, NewGame).
 
+%%% gets the game level.
+get_game_level(Game, Level):-
+        search_list(9, Game, Level).
+
+%%% changes the game level.
+set_game_level(Game, NextLevel, NewGame):-
+        change_list_at(9, Game, NextLevel, NewGame).
 
 
 %%%%% decrements each piece in the game after they've been moved.

@@ -19,15 +19,21 @@ parse_answer(Input):-
 
 parse_answer(Input):-
         Input == 2, 
+        write('Level 1 or 2? '),
+        read(Level),
+        (Level == 1 ; Level == 2),
         write('        Human VS Machine'),nl,nl,
-        human_machine(Game), 
+        human_machine(Game,Level), 
         play(Game),
         !.
 
 parse_answer(Input):-
         Input == 3, 
+        write('Level 1 or 2? '),
+        read(Level),
+        (Level == 1 ; Level == 2),
         write('        Machine VS Machine'),nl,nl,
-        machine_machine(Game), 
+        machine_machine(Game,Level), 
         play(Game),
         !.
 parse_answer(Input):-
