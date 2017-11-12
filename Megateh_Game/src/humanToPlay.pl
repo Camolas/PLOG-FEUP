@@ -1,7 +1,9 @@
 humanTurn(Game,NextGame):-
         repeat,
         get_pieceBoard(Game,PieceBoard),
-        display_board(PieceBoard,4),
+        get_numPiecesBoard(Game, NPBoard),
+        get_heightBoard(Game,HeightBoard),
+        display_board(PieceBoard,4,NPBoard,HeightBoard),
         display_actualInfo(Game),nl,
         ask_position(Row, Col),
         ask_piece(NewPiece),

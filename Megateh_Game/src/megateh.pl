@@ -83,7 +83,9 @@ play(Game):-
 
 play(Game):-
         get_pieceBoard(Game,PieceBoard),
-        display_board(PieceBoard,4),
+        get_numPiecesBoard(Game,NPiecesBoard),
+        get_heightBoard(Game,HeightBoard),
+        display_board(PieceBoard,4,NPiecesBoard,HeightBoard),
         get_state(Game,State),
         State == yes,
         true.

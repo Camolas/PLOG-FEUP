@@ -1,7 +1,9 @@
 machineTurn(Game,NextGame):-
         repeat,
         get_pieceBoard(Game,PieceBoard),
-        display_board(PieceBoard,4),
+        get_numPiecesBoard(Game, NPBoard),
+        get_heightBoard(Game,HeightBoard),
+        display_board(PieceBoard,4,NPBoard,HeightBoard),
         display_actualInfo(Game),nl,
         random(0,3,Row),
         random(0,3,Col),
