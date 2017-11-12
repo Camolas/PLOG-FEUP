@@ -1,3 +1,5 @@
+
+%%% predicates to run when the player is the machine
 machineTurn(Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NPBoard),
         display_board(PieceBoard,4,NPBoard,HeightBoard),
@@ -18,11 +20,14 @@ machineTurn(Game,NextGame):-
         move(Row,Col,Piece,Game,NextGame),
         !.
 
+%%% returns the desired piece from the machine turn
 get_machine_piece(Piece):-
         random(0,4,Random),
         generate_piece(Random,Piece),
         !.
 
+
+%%% generates the piece from the value returned from the random function.
 generate_piece(Random,f):-
         Random == 0.
 
@@ -35,7 +40,7 @@ generate_piece(Random,ff):-
 generate_piece(Random,hh):-
         Random == 3.
 
-
+%%% shows the random position and piece to move.
 display_machine_move(Row, Col, Piece):-
         
         write('Machine puts '), write(Piece), write(' in '),

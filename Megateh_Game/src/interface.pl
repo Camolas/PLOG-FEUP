@@ -1,3 +1,5 @@
+
+%%% prints on the console the main menu
 print_main:-
         write('       WELCOME TO MEGATEH     '), nl, nl,
         write('  Please choose your game mode: '), nl,
@@ -6,6 +8,8 @@ print_main:-
         write('  3 - Computer vs. Computer'), nl,
         write('  0 - Exit Game'),nl.
 
+
+%%% parses the input for the game mode, starting the game loop
 parse_answer(Input):-
         Input == 1, 
         write('        Human VS Human'),nl,nl,
@@ -32,6 +36,10 @@ parse_answer(Input):-
         halt(0),
         !.
 
+
+%%% displays the most updated information of the game, 
+%%% regarding the number of pieces left
+%%% and the player.
 display_actualInfo(Game):-
         get_playerToPlay(Game, PlayerToPlay),
         player_userName(PlayerToPlay, PlayerUserName),
@@ -46,7 +54,7 @@ display_actualInfo(Game):-
         write('     Holed: '), write(NumHPieces),
         write('     Double: '), write(NumDoublePieces), nl, nl.
 
-
+%%% gets the game winner if a winning condition is met.
 set_game_winner(Game,NextGame):-
         get_playerToPlay(Game,ActualPlayer),
         set_state(Game,'yes',NextGame),

@@ -1,29 +1,33 @@
+
+%%% the possible pieces, including the empty cell
 piece(flat).
 piece(holed).
 piece(doubleFlat).
 piece(doubleHoled).
 piece(empty).
 
+%%% the char meaning of each piece
 char(flat,'f').
 char(holed, 'h').
 char(doubleFlat, 'F').
 char(doubleHoled, 'H').
 char(empty, ' ').
 
+%%% the main type for winning conditions purposes.
 mainType(flat,flatMain).
 mainType(doubleFlat,flatMain).
 mainType(holed,holedMain).
 mainType(doubleHoled,holedMain).
 mainType(empty,empty).
 
-
+%%% the height of each piece.
 height(empty,0).
 height(flat,1).
 height(holed,1).
 height(doubleFlat,2).
 height(doubleHoled,2).
 
-
+%%% the index number of each column
 char_number('a',0).     %char_number('A',0).
 
 char_number('b',1).     %char_number('B',1).
@@ -34,21 +38,24 @@ char_number('d',3).     %char_number('D',3).
 
 char_number(_,10).
 
+%%%% the conversion of a number to the index column to display purposes.
 number_char(Number,Char):- char_number(Char,Number).
 
-
+%%%% the initial piece board, just with empty pieces
 empty_board([[empty,empty,empty,empty],
              [empty,empty,empty,empty],
              [empty,empty,empty,empty],
              [empty,empty,empty,empty]
             ]).
 
+%%% the initial height board
 empty_height([[0,0,0,0],
               [0,0,0,0],
               [0,0,0,0],
               [0,0,0,0]
              ]).
 
+%%% the initial num of pieces board.
 empty_numPieces([[0,0,0,0],
                  [0,0,0,0],
                  [0,0,0,0],
@@ -56,7 +63,10 @@ empty_numPieces([[0,0,0,0],
                 ]).
 
 
-
+%%%%%%%% Printing the board predicates.
+%%%%%%%% The board will, in each cell, the piece there (center),
+%%%%%%%% The num of pieces in that cell (bottom left),
+%%%%%%%% The total height in that cell (bottom right).       
 put2code(Code):-
     put_code(Code),put_code(Code).
 
@@ -113,6 +123,9 @@ draw_line([Head|Tail]) :-
         write('    |    '), write(S), 
         draw_line(Tail).
 
+%%% returns the piece type, from the char representation
 get_piece_type(Char, Meaning):- char(Meaning,Char).
 
+%%% returns the piece height
 get_piece_height(Piece, Height):- height(Piece,Height).
+

@@ -1,3 +1,6 @@
+
+
+%%%% predicates to run when the player is a human.
 humanTurn(Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NPBoard),
         display_board(PieceBoard,4,NPBoard,HeightBoard),
@@ -8,6 +11,7 @@ humanTurn(Game,NextGame):-
         move(Row,Col,NewPiece,Game,NextGame),
         !.
 
+%%% gets the desired column and row to move a piece, from an input.
 ask_position(Row, Col):-
         write('Where do you want to put your piece?'),nl,
         write('Row: '),
@@ -19,6 +23,7 @@ ask_position(Row, Col):-
         Row is 4 - TempRow,
         parse_position(Row,Col).
 
+%%% gets the desired piece to move, from an input.
 ask_piece(Piece):-
         write('And what piece?'),nl,
         write('       f for flat'),nl,

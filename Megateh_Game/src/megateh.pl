@@ -11,7 +11,7 @@
 :-include('megatehLogic.pl').
 :-include('machineToPlay.pl').
  
-
+%%initializes game, asking game mode.
 megateh:-
         initialize_random_seed,
         print_main,
@@ -21,13 +21,19 @@ megateh:-
         parse_answer(Ans),
         !.
 
+%%% the players in the game
 player(player_1).
 player(player_2).
 player(machine).
 
+
+%the user name to be printed
 player_userName(player_1, 'PLAYER 1').
 player_userName(player_2, 'PLAYER 2').
 player_userName(machine, 'MACHINE').
+
+
+%%the game loop, depending on the game mode.
 
 play(Game):-
         get_mode(Game, Mode),
