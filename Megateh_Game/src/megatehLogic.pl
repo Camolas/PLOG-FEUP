@@ -119,26 +119,29 @@ check_winner(Game,NextGame):-
         check_row(Diagonal),
         set_game_winner(Game,NextGame).
 
+%%%%%%%%%%% 3-stair horizontal
 check_winner(Game,NextGame):-
         get_heightBoard(Game,Board),
         3-step-win(Board,0),
         set_game_winner(Game,NextGame).
 
+%%%%%%%%%%% 3-stair vertical
 check_winner(Game,NextGame):-
         get_heightBoard(Game,Board),
         transpose(Board,TBoard),
         3-step-win(TBoard,0),
         set_game_winner(Game,NextGame).
 
+%%%%%%%%%%% 3-stair horizontal backwards
 check_winner(Game,NextGame):-
         get_heightBoard(Game,Board),
         transpose(Board,TBoard),
         reverse(TBoard,RBoard),
         transpose(RBoard,TTBoard),
-        write(TTBoard),nl,
         3-step-win(TTBoard,0),
         set_game_winner(Game,NextGame).
 
+%%%%%%%%%%% 3-stair vertical backwards
 check_winner(Game,NextGame):-
         get_heightBoard(Game,Board),
         transpose(Board,TBoard),
@@ -148,12 +151,52 @@ check_winner(Game,NextGame):-
         3-step-win(TTTBoard,0),
         set_game_winner(Game,NextGame).
 
+%%%%%%%%%%% 3-stair diagonal top-right
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        get_diagonal(Board,0,Diagonal),
+        3-step-win-check(Diagonal,0),
+        set_game_winner(Game,NextGame).
+
+%%%%%%%%%%% 3-stair diagonal bottom-right
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        reverse(Board,RBoard),
+        get_diagonal(RBoard,0,Diagonal),
+        3-step-win-check(Diagonal,0),
+        set_game_winner(Game,NextGame).
+
+%%%%%%%%%%% 3-stair diagonal bottom-left
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        transpose(Board,TBoard),
+        reverse(TBoard,RBoard),
+        get_diagonal(RBoard,0,Diagonal),
+        3-step-win-check(Diagonal,0),
+        set_game_winner(Game,NextGame).
+
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        get_3_up_diagonal(Board,1,Diagonal),
+        write(Diagonal),nl,
+        3-step-win-check(Diagonal,0),
+        set_game_winner(Game,NextGame).
+
 %%gets a list with the elements of the board top-left/bottom-right diagonal
 get_diagonal([],_,[]).
 get_diagonal([Head|Tail], Col, [Piece|Rest]):-
         search_list(Col,Head,TempPiece),
         Piece = TempPiece,
         NextCol is Col + 1,
+        get_diagonal(Tail,NextCol,Rest).
+
+get_3_up_diagonal([_|_],_,[]).
+get_3_up_diagonal([Head|Tail], Col, [Piece|Rest]):-
+        search_list(Col,Head,TempPiece),
+        Piece = TempPiece,
+        write(Piece),nl,
+        NextCol is Col + 1,
+        NextCol < 3,
         get_diagonal(Tail,NextCol,Rest).
 
    
@@ -187,12 +230,14 @@ check_height([Pivot,Second, Third, Fourth]):-
 
 3-step-win([_|_],_):-fail.
 
+%%%checks every row of the HeightBoard to find a sequence of 3-2-1
 3-step-win([Head|Tail],Col):-
         3-step-win-check(Head,Col);
         Col1 is Col + 1,
         3-step-win-check(Head,Col1);
         3-step-win(Tail, 0). 
-     
+
+%%% checks if there's a sequence of 3-2-1 in a row of the heightBoard    
 3-step-win-check(Row,Col0):-
        search_list(Col0,Row,Height1),
        Height1 == 3,
