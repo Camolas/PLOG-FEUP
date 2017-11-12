@@ -15,17 +15,11 @@ change_list_at(Index,[Head|ActualTail], NewInput, [Head|NextTail]):-
 get_return_key:-
         get_code(_).
 
-get_coords(Row,Col):-
-        get_integer(C),
-        get_integer(R),
-        get_return_key,
-        Row is 4-R,
-        Col is C-49.
 
-get_integer(Value):-
-        get_code(TempV),
-        Value is TempV-48.
-       
+get_col(Col):-
+        read(Input),
+        get_return_key,
+        char_number(Input,Col).
 
 search_board(0, Col, [Head|_], Piece):-
         search_list(Col, Head, Piece).
@@ -81,4 +75,9 @@ parse_piece(TempPiece,Piece):-
                 )
         ).              
 
-
+parse_position(Row,Col):-
+        Row >= 0,
+        Row =< 3,
+        Col >=0,
+        Col =< 3.
+            

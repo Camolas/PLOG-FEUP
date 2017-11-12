@@ -1,22 +1,28 @@
 machineTurn(Game,NextGame):-
-        repeat,
+        
         get_pieceBoard(Game,PieceBoard),
         get_numPiecesBoard(Game, NPBoard),
         get_heightBoard(Game,HeightBoard),
         display_board(PieceBoard,4,NPBoard,HeightBoard),
-        display_actualInfo(Game),nl,
-        random(0,3,Row),
-        random(0,3,Col),
-        write([Row,Col]),
+        repeat,
+        display_actualInfo(Game),
+        
+        random(1,5,TempRow),
+        random(0,4,Col),
+        Row is 4 - TempRow,
+        number_char(Col,TempCol),
+        
         get_machine_piece(TempPiece),
         parse_piece(TempPiece,Piece),
-        nl,write(Piece),nl,
+        get_piece_type(Piece,Type),
+        
+        display_machine_move(TempRow, TempCol, Type),
+        
         move(Row,Col,Piece,Game,NextGame),
         !.
 
 get_machine_piece(Piece):-
-        random(0,3,Random),
-        repeat,
+        random(0,4,Random),
         generate_piece(Random,Piece),
         !.
 
@@ -31,3 +37,11 @@ generate_piece(Random,ff):-
 
 generate_piece(Random,hh):-
         Random == 3.
+
+
+display_machine_move(Row, Col, Piece):-
+        
+        write('Machine puts '), write(Piece), write(' in '),
+        write(Col),write(Row),nl,nl.
+
+

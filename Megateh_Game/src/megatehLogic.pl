@@ -1,6 +1,6 @@
 move(Row,Col,Piece,Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
-        check(Row,Col,Piece,PieceBoard,NumPiecesBoard),
+        check_move(Row,Col,Piece,PieceBoard,NumPiecesBoard),
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
@@ -15,7 +15,7 @@ move(Row,Col,Piece,Game,NextGame):-
 
 move(Row,Col,Piece,Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
-        check(Row,Col,Piece,PieceBoard,NumPiecesBoard),
+        check_move(Row,Col,Piece,PieceBoard,NumPiecesBoard),
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
@@ -32,24 +32,21 @@ get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard):-
         get_heightBoard(Game, HeightBoard),
         get_numPiecesBoard(Game, NumPiecesBoard).
 
-check(R,C,P,Pb,NPb):-
+check_move(R,C,P,Pb,NPb):-
         check_type(R,C,P,Pb),
         check_number(R,C,NPb).
 
 check_type(R,C,P,Pb):-
-        (P == 'h' ; P == 'f' ; P =='F' ; P == 'H'),
+       ( (P == 'h' ; P == 'f' ; P =='F' ; P == 'H'),
         search_board(R,C,Pb,PieceThere),
         PieceThere \= doubleFlat,
-        PieceThere \= doubleHoled.
-       %;
-       % nl, write('You cannot put any piece on top of a double one! Try again'),nl,nl.
+        PieceThere \= doubleHoled).
+     
 
 
 check_number(R,C,NPb):-
-        search_board(R,C,NPb,HowManyThere),
-        HowManyThere < 2.
-        %;
-        %nl,write('There are already 2 pieces in that cell. Try again!'),nl,nl.
+        (search_board(R,C,NPb,HowManyThere),
+        HowManyThere < 2).
 
 put_piece(Row,Col,Piece,
           PieceBoard, HeightBoard, NumPiecesBoard,

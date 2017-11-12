@@ -23,6 +23,20 @@ height(holed,1).
 height(doubleFlat,2).
 height(doubleHoled,2).
 
+
+char_number('a',0).     %char_number('A',0).
+
+char_number('b',1).     %char_number('B',1).
+
+char_number('c',2).     %char_number('C',2).
+
+char_number('d',3).     %char_number('D',3).
+
+char_number(_,10).
+
+number_char(Number,Char):- char_number(Char,Number).
+
+
 empty_board([[empty,empty,empty,empty],
              [empty,empty,empty,empty],
              [empty,empty,empty,empty],
