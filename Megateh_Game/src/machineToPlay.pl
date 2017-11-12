@@ -30,16 +30,16 @@ level_1_move(Row, Col, Piece):-
 
 level_2_move(PieceBoard,Row,Col,Piece):-
         get_empty_cells(PieceBoard,0,List),
-        write('Got here!'),nl,
+        %write('Got here!'),nl,
         length(List,Len),
         random(0, Len, Rand1),
         search_list(Rand1, List, List2),
         
         length(List2,Len2),
         random(0, Len2, Rand2),
-        write(List2),nl,
+        %write(List2),nl,
         get_level_2_position(List2, Rand2, Row, Col),
-        write(Row), write('   '), write(Col),nl,
+        %write(Row), write('   '), write(Col),nl,
         TempRow is 4 - Row,
         number_char(Col,TempCol),
         

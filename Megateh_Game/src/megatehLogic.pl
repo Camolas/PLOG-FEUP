@@ -18,8 +18,7 @@ move(Row,Col,Piece,Game,NextGame):-
         set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
         
-        check_winner(NextPieceBoard,GameInfoPHNP,GameInfoPHNPWinner),
-        
+        check_winner(GameInfoPHNP,GameInfoPHNPWinner),
         change_player(GameInfoPHNPWinner, NextGame).
 
 
@@ -93,27 +92,60 @@ check_draw(Game,NextGame):-
      
 %%%%%%%%%%%% 4-in-a-row horizontal
 
-check_winner(Board,Game,NextGame):-
+check_winner(Game,NextGame):-
+        get_pieceBoard(Game,Board),
         four_line(Board),
         set_game_winner(Game,NextGame).
 
 %%%%%%%%%%% 4-in-a-row vertical
-check_winner(Board,Game,NextGame):-
+check_winner(Game,NextGame):-
+        get_pieceBoard(Game,Board),
         transpose(Board,TransBoard),
         four_line(TransBoard),
         set_game_winner(Game,NextGame).
 
 %%%%%%%%%%% 4-in-a-row diagonal
-check_winner(Board,Game,NextGame):-
+check_winner(Game,NextGame):-
+        get_pieceBoard(Game,Board),
         get_diagonal(Board,0,Diagonal),
         check_row(Diagonal),
         set_game_winner(Game,NextGame).
 
 %%%%%%%%%%% 4-in-a-row inverse diagonal
-check_winner(Board,Game,NextGame):-
+check_winner(Game,NextGame):-
+        get_pieceBoard(Game,Board),
         reverse(Board,RevBoard),
         get_diagonal(RevBoard,0,Diagonal),
         check_row(Diagonal),
+        set_game_winner(Game,NextGame).
+
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        3-step-win(Board,0),
+        set_game_winner(Game,NextGame).
+
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        transpose(Board,TBoard),
+        3-step-win(TBoard,0),
+        set_game_winner(Game,NextGame).
+
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        transpose(Board,TBoard),
+        reverse(TBoard,RBoard),
+        transpose(RBoard,TTBoard),
+        write(TTBoard),nl,
+        3-step-win(TTBoard,0),
+        set_game_winner(Game,NextGame).
+
+check_winner(Game,NextGame):-
+        get_heightBoard(Game,Board),
+        transpose(Board,TBoard),
+        transpose(TBoard,TTBoard),
+        reverse(TTBoard,RBoard),
+        transpose(RBoard,TTTBoard),
+        3-step-win(TTTBoard,0),
         set_game_winner(Game,NextGame).
 
 %%gets a list with the elements of the board top-left/bottom-right diagonal
@@ -151,8 +183,28 @@ check_height([Pivot,Second, Third, Fourth]):-
         height(Second,Height),
         height(Third,Height),
         height(Fourth,Height).
-        
-        
+
+
+3-step-win([_|_],_):-fail.
+
+3-step-win([Head|Tail],Col):-
+        3-step-win-check(Head,Col);
+        Col1 is Col + 1,
+        3-step-win-check(Head,Col1);
+        3-step-win(Tail, 0). 
+     
+3-step-win-check(Row,Col0):-
+       search_list(Col0,Row,Height1),
+       Height1 == 3,
+       %write('Found first'),nl,
+       Col1 is Col0+1,
+       search_list(Col1,Row,Height2),
+       Height2 == 2,
+       %write('Found second'),nl,
+       Col2 = Col1+1,
+       search_list(Col2,Row,Height3),
+       Height3 == 1.
+       %write('Found third').       
         
            
         
