@@ -4,20 +4,20 @@
 
 move(Row,Col,Piece,Game,NextGame):-
         get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard),
-        
+
         check_move(Row,Col,Piece,PieceBoard,NumPiecesBoard),
-        
+
         put_piece(Row,Col,Piece,
                   PieceBoard, HeightBoard, NumPiecesBoard,
                   NextPieceBoard, NextHeightBoard, NextNumPiecesBoard),
-        
+
         update_piece_info(Game, Piece, GameInfo),
         \+check_draw(GameInfo, NextGame),
-        
+
         set_pieceBoard(GameInfo, NextPieceBoard, GameInfoP),
         set_heightBoard(GameInfoP, NextHeightBoard, GameInfoPH),
         set_numPiecesBoard(GameInfoPH, NextNumPiecesBoard, GameInfoPHNP),
-        
+
         check_winner(GameInfoPHNP,GameInfoPHNPWinner),
         change_player(GameInfoPHNPWinner, NextGame).
 
@@ -41,8 +41,8 @@ get_actual_board(Game, PieceBoard, HeightBoard, NumPiecesBoard):-
         get_heightBoard(Game, HeightBoard),
         get_numPiecesBoard(Game, NumPiecesBoard).
 
-%%checks if a move is valid, considering the two restrictions in 
-%the game.           
+%%checks if a move is valid, considering the two restrictions in
+%the game.
 check_move(R,C,P,Pb,NPb):-
         check_type(R,C,P,Pb),
         check_number(R,C,NPb).
@@ -54,7 +54,7 @@ check_type(R,C,P,Pb):-
         PieceThere \= doubleFlat,
         PieceThere \= doubleHoled.
 
-%%checks if there's less than 2 pieces in the desired position.   
+%%checks if there's less than 2 pieces in the desired position.
 check_number(R,C,NPb):-
         search_board(R,C,NPb,HowManyThere),
         HowManyThere < 2.
@@ -63,17 +63,17 @@ check_number(R,C,NPb):-
 put_piece(Row,Col,Piece,
           PieceBoard, HeightBoard, NumPiecesBoard,
           NextPB, NextHB, NextNPB):-
-        
+
                 get_piece_type(Piece,Type),
                 get_piece_height(Type, PieceHeight),
-                
-                
+
+
                 search_board(Row, Col, HeightBoard, ActualHeight),
                 NextHeight is ActualHeight + PieceHeight,
-                
+
                 search_board(Row, Col, NumPiecesBoard, ActualNum),
                 NextNum is ActualNum + 1,
-                
+
                 change_cell(Row, Col, PieceBoard, Type, NextPB),
                 change_cell(Row, Col, HeightBoard, NextHeight, NextHB),
                 change_cell(Row, Col, NumPiecesBoard, NextNum, NextNPB).
@@ -86,10 +86,10 @@ check_draw(Game,NextGame):-
         FPieces == 0, HPieces == 0, DPieces == 0,
         set_state(Game,'yes',NextGame),
         nl,write('It\'s a draw!'),nl.
-        
+
 %%%%%%%%%%%%%%%%checking of winning conditions%%%%%%%%%%%%%%%%
 
-     
+
 %%%%%%%%%%%% 4-in-a-row horizontal
 
 check_winner(Game,NextGame):-
@@ -178,7 +178,7 @@ check_winner(Game,NextGame):-
 check_winner(Game,NextGame):-
         get_heightBoard(Game,Board),
         get_3_up_diagonal(Board,1,Diagonal),
-        write(Diagonal),nl,
+        %write(Diagonal),nl,
         3-step-win-check(Diagonal,0),
         set_game_winner(Game,NextGame).
 
@@ -194,12 +194,12 @@ get_3_up_diagonal([_|_],_,[]).
 get_3_up_diagonal([Head|Tail], Col, [Piece|Rest]):-
         search_list(Col,Head,TempPiece),
         Piece = TempPiece,
-        write(Piece),nl,
+        %write(Piece),nl,
         NextCol is Col + 1,
         NextCol < 3,
         get_diagonal(Tail,NextCol,Rest).
 
-   
+
 four_line([]):- fail.
 
 four_line([Row|NextRows]):-
@@ -218,7 +218,7 @@ check_type([Pivot,Second,Third,Fourth]):-
         mainType(Second,MainType),
         mainType(Third,MainType),
         mainType(Fourth,MainType).
-        
+
 
 check_height([Pivot,Second, Third, Fourth]):-
         height(Pivot,Height),
@@ -235,9 +235,9 @@ check_height([Pivot,Second, Third, Fourth]):-
         3-step-win-check(Head,Col);
         Col1 is Col + 1,
         3-step-win-check(Head,Col1);
-        3-step-win(Tail, 0). 
+        3-step-win(Tail, 0).
 
-%%% checks if there's a sequence of 3-2-1 in a row of the heightBoard    
+%%% checks if there's a sequence of 3-2-1 in a row of the heightBoard
 3-step-win-check(Row,Col0):-
        search_list(Col0,Row,Height1),
        Height1 == 3,
@@ -249,9 +249,4 @@ check_height([Pivot,Second, Third, Fourth]):-
        Col2 = Col1+1,
        search_list(Col2,Row,Height3),
        Height3 == 1.
-       %write('Found third').       
-        
-           
-        
-        
-        
+       %write('Found third').
