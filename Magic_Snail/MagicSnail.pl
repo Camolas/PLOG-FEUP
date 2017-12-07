@@ -38,7 +38,6 @@ spiral([X|XS], FSp) :-
 length_list(N, L) :-
    length(L, N),
    domain(L,0,N).
-.
 
 n_matrix(N, Xss) :-
    length(Xss, N),
@@ -49,14 +48,20 @@ maplist(C, [X|Xs]) :-
    call(C,X),
    maplist(C, Xs).
    
-   proj(N,Seq,Initial):-
-   n_matrix(N,Matrix),
+   %proj(N,Seq,Initial):-
+   %n_matrix(N,Matrix),
    
 flatten(Matrix,FlatMatrix):-
 labeling([],[FlatMatrix]),
 write(FlatMatrix).
 
-//fourQuenns
+%//fourQuenns
+tab(L):-
+L=[[1,2,3,4,5],
+	[6,7,8,9,10],
+	[11,12,13,14,15],
+	[16,17,18,19,20],
+	[21,22,23,24,25]].
    
 teste:-
 	tab(L),
