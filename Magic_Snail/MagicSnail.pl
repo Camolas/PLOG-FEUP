@@ -32,10 +32,6 @@ splitRev([[X|XS]|XSS], A, A2, [XS|R]) :-
 %Vars=[A,B,C,X].
 
 
-		
-
-		
-
 %   rotate(+M, RM)
 % Gira a matriz 90 ° no sentido horário.
 rotate(XS, []) :- isEmpty(XS).
@@ -57,7 +53,7 @@ spiral([X|XS], FSp) :-
     rotate(R, RR),
     spiral(RR, Sp),
     append(C, Sp, FSp).
-	
+/*	
 spiral(M, []) :- isEmpty(M).
 spiral([X|XS], FSp) :-
     rotate(R, RR),
@@ -72,19 +68,18 @@ spiral2([X|XS], FSp) :-
     split([X|XS], C, R),
     rotate2(R, RR),
     spiral2(RR, Sp),
-    append(C, Sp, FSp).
+    append(C, Sp, FSp).*/
 
 
 length_list(N, L) :-
-   length(L, N),
-   domain(L,0,N).
+   length(L, N).
 
 n_matrix(N, Xss) :-
    length(Xss, N),
    maplist(length_list(N),Xss).
 
-maplist(_, []).
-maplist(C, [X|Xs]) :-
+maplist2(_, []).
+maplist2(C, [X|Xs]) :-
    call(C,X),
    maplist(C, Xs).
    
@@ -115,16 +110,62 @@ teste2:-
 	tab(L),
 	spiral2(L,L2),
 	write(L2).
+   /*
+tabuleiro(Size):-
+	size #= 5,
+	L=[length(Vars,Size)],
+	[length(Vars2,Size)],
+	[length(Vars3,Size)],
+	[length(Vars4,size)],
+	[length(Vars5,size)]].*/
+
+
+
    
-teste:-
+teste(size):-%teste:-
 	
-	tab(L),
+	L=[tabuleiro],% tab(L)
 	transpose(L,LT),
 	spiral(LT,L2),
 	write(L2).
 	
+magicSnail(N,Keys,Matrix):-
+	n_matrix(N, Matrix),
+
+	spiral(Matrix,SpiralList),
+
+
+	%dominio
+	length(Keys,LengthKeys),
+	domain(SpiralList,0,LengthKeys),
+
+	%Restricoes
+
+	
+	%restricao da linha
+	checkMatrix(Matrix,Keys),
+	%restições
+	transpose(Matrix,MatrixT),
+	checkMatrix(MatrixT,Keys),
+
+	%labeling
+	labeling([],SpiralList),
+
+	%display
+	displayMatrix(Matrix).
+	%write(Matrix).
+
+	displayMatrix([Lin|Ls]):-
+		write(Lin),
+		nl,
+		displayMatrix(Ls).
+	displayMatrix([]).
+
+
+
 	run:- length(Vars,25),
 		domain(Vars, 0 , 3),
+		size #>= Vars+2,
 		labeling([],Vars),
 		write(Vars).
 		
@@ -133,7 +174,55 @@ letra(0 , X).
 letra(1 , A).
 letra(2 , B).
 letra(3 , C).
+
+%isolar uma coluna e usar o global_cardinality para
+/*checkRow(R):-
+
+	global_cardinality(Vars, [0-X,1-1, 2-1, 3-1]),*/
+verificaRestricao(M):-
+	checkMatrix(M),
+	checkMatrix(transpose(M)).
+
+checkMatrix([Linha|Ls],Keys):-
+	checkRow(Linha,Keys),
+	checkMatrix(Ls,Keys).
+
+
+checkMatrix([],_).
+	/*R #= R+1,
+	checkColumn(C,)
+	R<Size.*/
+
+% dá/gera a lista das keys para associar ao global_cardinaly sem o 0
+numCard(Keys,List):-
+  	findall(Key-1, member(Key,Keys), List).
+
+%gera o argumento completo para associar ao global_cardinaly!
+numCard0(N,Keys,List):-
+	 numCard(Keys,ListProv),
+	 length(Keys, LengthKey),
+	 NumberZeros is N - LengthKey,
+	 List=[0-NumberZeros|ListProv].
+
+checkRow(R,Keys):-
+length(R, N),
+numCard0(N,Keys,List),
+global_cardinality(R, List). %[1-1, 2-1, 3-1,0-TamanhoDaLinhaMenosTamanhoDaChave]),
+
+
+countletras(X) :-
+    findall(N, letra(N), Ns),
+    length(Ns, X).
+
 	
+
+%checkColumn(C):-
+
+%Máquinas de estados
+/*reconhece(A):-
+	inicial(N),
+	transicao().*/
+
 %split(Vars, 
 %spiral(Vars
 	/* LISTA 	TODOS OS ELEMENTOS: Sequencia ABC
