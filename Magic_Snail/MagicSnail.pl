@@ -49,10 +49,9 @@ rotate2(R, MR).
 
 spiral(M, []) :- isEmpty(M).
 spiral([X|XS], FSp) :-
-    split([X|XS], C, R),
-    rotate(R, RR),
+    rotate(XS, RR),
     spiral(RR, Sp),
-    append(C, Sp, FSp).
+    append(X, Sp, FSp).
 /*	
 spiral(M, []) :- isEmpty(M).
 spiral([X|XS], FSp) :-
@@ -147,12 +146,17 @@ magicSnail(N,Keys,Matrix):-
 	%restições
 	transpose(Matrix,MatrixT),
 	checkMatrix(MatrixT,Keys),
+	%seq(SpiralList, Keys, Keys),
+	reverse(SpiralList, RevSpiralList),
+	makeSequence(SpiralList),
+
 
 	%labeling
-	labeling([],SpiralList),
+	labeling([],RevSpiralList),
 
 	%display
-	displayMatrix(Matrix).
+	displayMatrix(Matrix), nl, nl,
+	write(SpiralList).
 	%write(Matrix).
 
 	displayMatrix([Lin|Ls]):-
@@ -210,9 +214,36 @@ numCard0(N,Keys,List),
 global_cardinality(R, List). %[1-1, 2-1, 3-1,0-TamanhoDaLinhaMenosTamanhoDaChave]),
 
 
+seq(Vars,[],Ar2):- length(Vars,L),(count(0,Vars,#=,L) #\/ seq(Vars,Ar2,Ar2)). 
+seq([Hvars | Tvars], [Hargs | Targs], Array2):-
+	((Hvars #= 0 #/\ NewArray #= [Hargs | Targs]) #\/
+	(Hvars #= Hargs #/\ NewArray #= Targs)),
+	seq(Tvars, NewArray,Array2).
+
+
+
+makeSequence(Vars):-
+	automaton(Vars,
+		[source(a), sink(a)],
+		[arc(a, 0, a),
+		 arc(a, 1, b),
+		 arc(a, 2, f),
+		 arc(a, 3, f),
+		 arc(b, 0, b),
+		 arc(b, 1, f),
+		 arc(b, 2, c),
+		 arc(b, 3, f),
+		 arc(c, 0, c),
+		 arc(c, 1, f),
+		 arc(c, 2, f),
+		 arc(c, 3, a)]).
+
+
+
+/*
 countletras(X) :-
     findall(N, letra(N), Ns),
-    length(Ns, X).
+    length(Ns, X).*/
 
 	
 
@@ -240,3 +271,6 @@ countletras(X) :-
 	generatePuzzle(SizeBoard, NumTrees, Trees, RowTents, ColTents),
 	write('Solver started'), nl, 
 	solvePuzzle(SizeBoard, NumTrees, Trees, RowTents, ColTents).*/
+
+	%continuedList(Vars, List) :-
+
