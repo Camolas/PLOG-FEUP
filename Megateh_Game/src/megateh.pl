@@ -11,29 +11,23 @@
 :-include('megatehLogic.pl').
 :-include('machineToPlay.pl').
  
-%%initializes game, asking game mode.
+
 megateh:-
         initialize_random_seed,
         print_main,
-        repeat,
+        repeat, % senão houver condição para a resposta ele faz fail, tem de ser um numero no intervalo 0 a 3
         read(Ans),
         get_return_key,
         parse_answer(Ans),
         !.
 
-%%% the players in the game
 player(player_1).
 player(player_2).
 player(machine).
 
-
-%the user name to be printed
 player_userName(player_1, 'PLAYER 1').
 player_userName(player_2, 'PLAYER 2').
 player_userName(machine, 'MACHINE').
-
-
-%%the game loop, depending on the game mode.
 
 play(Game):-
         get_mode(Game, Mode),
@@ -89,9 +83,7 @@ play(Game):-
 
 play(Game):-
         get_pieceBoard(Game,PieceBoard),
-        get_numPiecesBoard(Game,NPiecesBoard),
-        get_heightBoard(Game,HeightBoard),
-        display_board(PieceBoard,4,NPiecesBoard,HeightBoard),
+        display_board(PieceBoard,4),
         get_state(Game,State),
         State == yes,
         true.

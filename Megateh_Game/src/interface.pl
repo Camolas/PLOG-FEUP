@@ -11,33 +11,32 @@ print_main:-
 
 %%% parses the input for the game mode, starting the game loop
 parse_answer(Input):-
-        Input == 1, 
+        Input =:= 1, 
         write('        Human VS Human'),nl,nl,
         human_human(Game), 
-        play(Game),
-        !.
+        play(Game).
 
 parse_answer(Input):-
-        Input == 2, 
+        Input =:= 2, 
         write('Level 1 or 2? '),
         read(Level),
-        (Level == 1 ; Level == 2),
+        (Level =:= 1 ; Level =:= 2),
         write('        Human VS Machine'),nl,nl,
         human_machine(Game,Level), 
         play(Game),
         !.
 
 parse_answer(Input):-
-        Input == 3, 
+        Input =:= 3, 
         write('Level 1 or 2? '),
         read(Level),
-        (Level == 1 ; Level == 2),
+        (Level =:= 1 ; Level =:= 2),
         write('        Machine VS Machine'),nl,nl,
         machine_machine(Game,Level), 
         play(Game),
         !.
 parse_answer(Input):-
-        Input == 0, 
+        Input =:= 0, 
         write('Exiting...'), nl,
         halt(0),
         !.
