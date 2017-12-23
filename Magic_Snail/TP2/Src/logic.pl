@@ -6,40 +6,37 @@ setPuzzle(Spiral, BoardLength, KeyLength):-
     domain(Spiral, 0, KeyLength),
   %constraints
     checkRow(Spiral, BoardLength, KeyLength), %making sure each element of the key shows up only once every row
-    checkCol(Spiral, BoardLength, KeyLength), %making sure each element of the key shows up only once every column
+    checkCol(Spiral, BoardLength, KeyLength,1), %making sure each element of the key shows up only once every column
     checkSequence(Spiral, BoardLength), %making sure the sequence of the elements in the spiral is right
   %result
-    labeling([], Spiral).
-
+    labeling([ffc], Spiral).
 
 checkRow([],_,_):-!.
 checkRow(Spiral, BoardLength, KeyLength):-
     splitByLength(BoardLength, Spiral, SplitElems), %gets a list of the first row elems
-    append(SplitElems,RestElems,Spiral),
+    append(SplitElems,RestElems,Spiral), %to get the rest of the list
     checkRow(RestElems,BoardLength, KeyLength),
     
-    getKeyIndexedList(KeyLength,IndexedList),
-    setEachIndexCount(IndexedList, SplitElems, 1).
+    getKeyIndexedList(KeyLength,IndexedList), %gets an indexed list from 1 to the key's length
+    setEachIndexCount(IndexedList, SplitElems, 1). %makes sure that there's only 1 of each index on the split part
 
-
-checkCol([],_,_):-!.
-checkCol(Spiral,BoardLength, KeyLength):- 
-    checkCol(Spiral,BoardLength, KeyLength, 1).
-
+%gets a version of the list in which the order of the elements is like they've written there by columns
+checkCol([],_,_,_):-!.
 checkCol(_,BoardLength,_, N):-
     N > BoardLength,!.
 checkCol(Spiral, BoardLength, KeyLength, N1):-
     Next is N1+1,
     checkCol(Spiral, BoardLength, KeyLength, Next),
-
     getColElems(N1, BoardLength, Spiral, ColElems),
-
     checkRow(ColElems, BoardLength, KeyLength).
 
+
 checkSequence(List, BoardLength):-
-    setSpiralPath(BoardLength, Path),
-    setSpiral(List,Path, BoardLength,Spiral),
-    setSequence(Spiral,BoardLength).
+    setSpiralPath(BoardLength, Path), %gets a list in which the elements are the direction of the spiral
+    setSpiral(List,Path, BoardLength,Spiral,0,0), %sets the indexes in the list as if it was a matrix
+    setSequence(Spiral,BoardLength,1,0). %sets the constraints of the sequence
+
+
 
 %fills a list with the direction of the next 'move', considering the board's length
 setSpiralPath(1,[]):-!.
@@ -59,9 +56,6 @@ setSpiralPath(N,Path):-
 
     append(TmpPath, PathTail, Path).
 
-setSpiral(List, Path, BoardLength, Spiral):-
-    setSpiral(List, Path, BoardLength, Spiral, 0,0).
-
 setSpiral(List, [], BoardLength, Spiral ,Row,Column):-
     Index is Row*BoardLength + Column,
     nth0(Index, List, Elem),
@@ -69,30 +63,15 @@ setSpiral(List, [], BoardLength, Spiral ,Row,Column):-
     
 setSpiral(List, [Direction|PathTail], BoardLength, Spiral, Row,Column):-
     switch(Direction, [
-        d:(
-            NColumn is Column+1,
-            NRow is Row
-        ),
-        a:(
-            NColumn is Column-1,
-            NRow is Row
-        ),
-        s:(
-            NColumn is Column,
-            NRow is Row+1
-        ),
-        w:(
-            NColumn is Column,
-            NRow is Row-1
-        )
-    ]),
-    setSpiral(List, PathTail, BoardLength, SpiralTail,NRow,NColumn),
+        d:(NewCol is Column+1, NewRow is Row),
+        a:(NewCol is Column-1,NewRow is Row),
+        s:(NewCol is Column, NewRow is Row+1),
+        w:(NewCol is Column, NewRow is Row-1)]),
+    setSpiral(List, PathTail, BoardLength, SpiralTail,NewRow,NewCol),
     Index is Row*BoardLength + Column,
     nth0(Index, List, Elem),
     Spiral = [Elem | SpiralTail].
 
-setSequence(Spiral,BoardLength):-
-    setSequence(Spiral,BoardLength,1,0).
 
 setSequence(_,BoardLength, N,_):-
     N>BoardLength.
@@ -110,7 +89,6 @@ keyCounter(Spiral, Element, Limit, Index) :-
   keyCounterLimit(Spiral,Element, 0, Limit, Index, 0),
   element(Index,Spiral,Element). 
 
-
 keyCounterLimit(_,_,Count,Count,Index,Index).
 keyCounterLimit([Head|Tail], Element, Aux, Count, Index, IndexAux) :-
     Head #= Element #<=> Bool,
@@ -121,8 +99,8 @@ keyCounterLimit([Head|Tail], Element, Aux, Count, Index, IndexAux) :-
 setIndexCount(_, [], 0).
 setIndexCount(Value, [Head | Tail], Count) :-
     setIndexCount(Value, Tail, Count2),
-    Value #= Head #<=> Flag,
-    Count #= Count2 + Flag.
+    Value #= Head #<=> Bool,
+    Count #= Count2 + Bool.
 
 setEachIndexCount([],_,_).
 setEachIndexCount([Value|Rest], List, Count):-

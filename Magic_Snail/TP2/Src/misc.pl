@@ -30,11 +30,11 @@ setListAt([Value|Tail], Value, N):-
     setListAt(Tail, Value, N1).
 
 placeKeys([], [], _).
-placeKeys([Elem|Rest], After, Key):-
-    placeKeys(Rest, AfterRest, Key),
-    ifelse(nth1(Elem, Key, Atom),
-        After = [Atom|AfterRest],
-        After = [empty|AfterRest]).
+placeKeys([Elem|Rest], Result, Key):-
+    placeKeys(Rest, ResultTail, Key),
+    if_else(nth1(Elem, Key, Atom),
+        Result = [Atom|ResultTail],
+        Result = [empty|ResultTail]).
 
 listToMatrix([], _, []).
 listToMatrix(List, Size, [Row|Matrix]):-
@@ -47,8 +47,8 @@ listToMatrixRow([Item|List], Size, [Item|Row], Tail):-
   listToMatrixRow(List, NSize, Row, Tail).
 
 
-ifelse(Condition, If, _Else) :- Condition, !, If.
-ifelse(_, _, Else) :- Else.
+if_else(Condition, If, _Else) :- Condition, !, If.
+if_else(_, _, Else) :- Else.
 
 not(X) :- X, !, fail.
 not(_X).

@@ -1,8 +1,9 @@
+
 meaning(empty, '     '):-!.
-meaning(h_line, '+-----'):-!.
+meaning(h_line, '------'):-!.
 meaning(v_empty, ' '):-!.
 meaning(v_line, '|'):-!.
-meaning(h_empty, '+     '):-!.
+meaning(h_empty, '     '):-!.
 meaning(X, Res):-
     atom_concat('  ', X, X1),
     atom_concat(X1, '  ', Res).
@@ -81,7 +82,7 @@ verticalLinesAux(N, [Row|Rest], Center):-
 
     append([NewRow], CenterRest, Center).
 
-parseHorizontalLine([], ['+']).
+parseHorizontalLine([], [' ']).
 parseHorizontalLine([R1|Rest], Result):-
     parseHorizontalLine(Rest,Result1),
     meaning(R1, Ascii),
