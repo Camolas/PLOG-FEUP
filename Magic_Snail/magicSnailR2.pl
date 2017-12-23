@@ -1,11 +1,5 @@
 :-use_module(library(clpfd)).
 :-use_module(library(lists)).
-:- include('statistics.pl').
-:- use_module(library(clpfd)).
-
-matrix_rotated(Xss, Zss) :-
-   transpose(Xss, Yss),
-   maplist(reverse, Yss, Zss).
 
 /* MIEIC/FEUP - Progamação em Lógica:
 *	Manuel Curral
@@ -14,37 +8,39 @@ matrix_rotated(Xss, Zss) :-
 */
 
 %   isEmpty(+M)
-% Aplica-se apenas quando M não contém nenhum elemento.
+% Platí právě když M neobsahuje žádné prvky.
 isEmpty([]).
 isEmpty([[]|XS]) :- isEmpty(XS).
 
 %   split(+M, Col, Rest)
-% Divide a matriz na primeira coluna e no resto.
+% Rozdělí matici na první sloupec a zbytek.
 split([], [], []).
 split([[X|XS]|XSS], [X|C], [XS|R]) :-
     split(XSS, C, R).
-	
+
 %   splitRev(+M, RCol, Rest)
-% Divide a matriz na primeira coluna (na ordem inversa) e no resto.
+% Rozdělí matici na první sloupec (v opačném pořadí) a zbytek.
 splitRev(M, C, R) :- splitRev(M, [], C, R).
+
 splitRev([], A, A, []).
 splitRev([[X|XS]|XSS], A, A2, [XS|R]) :-
     splitRev(XSS, [X|A], A2, R).
 
 %   rotate(+M, RM)
-% Gira a matriz 90 ° no sentido horário.
+% Otočí matici o 90° ve směru hodinových ručiček.
 rotate(XS, []) :- isEmpty(XS).
-rotate([X|XS], [C|MR]) :-		
+rotate([X|XS], [C|MR]) :-
     splitRev([X|XS], C, R),
     rotate(R, MR).
 
 %   spiral(+M, R)
-% Localiza todos os elementos na espiral da matriz.
+% Nalezne všechny prvky na spirále matice.
 spiral(M, []) :- isEmpty(M).
 spiral([X|XS], FSp) :-
-    rotate(XS, RR),
+    split([X|XS], C, R),
+    rotate(R, RR),
     spiral(RR, Sp),
-    append(X, Sp, FSp).
+    append(C, Sp, FSp).
 
 length_list(N, L) :-
    length(L, N).
@@ -52,6 +48,11 @@ length_list(N, L) :-
 n_matrix(N, Xss) :-
    length(Xss, N),
    maplist(length_list(N),Xss).
+
+maplist2(_, []).
+maplist2(C, [X|Xs]) :-
+   call(C,X),
+   maplist(C, Xs).
       
 flatten(Matrix,FlatMatrix):-
 labeling([],[FlatMatrix]),
@@ -62,9 +63,10 @@ rowN([_|T],I,X) :-
     I1 is I-1,
     rowN(T,I1,X).
 
-magicSnail2(N,Keys,Matrix):-
+magicSnail(N,Keys,Matrix):-
 	n_matrix(N, Matrix),
-	spiral(Matrix,SpiralList),
+	transpose(Matrix,MatrixT),
+	spiral(MatrixT,SpiralList),
 	%dominio
 	length(Keys,LengthKeys),
 	domain(SpiralList,0,LengthKeys),
@@ -72,15 +74,14 @@ magicSnail2(N,Keys,Matrix):-
 			%restricao da linha
 	checkMatrix(Matrix,Keys),
 	%restições
-	transpose(Matrix,MatrixT),
+	
 	checkMatrix(MatrixT,Keys),
 	%seq(SpiralList, Keys, Keys),
 	reverse(SpiralList, RevSpiralList),
 	%restrições de sequência
 	makeSequence(SpiralList),
 	%labeling
-	labeling([],RevSpiralList),
-	fd_statitics,
+	labeling([],SpiralList),
 	%display
 	displayMatrix(Matrix), nl, nl,
 	write(SpiralList).
@@ -128,6 +129,12 @@ checkRow(R,Keys):-
 length(R, N),
 numCard0(N,Keys,List),
 global_cardinality(R, List). %[1-1, 2-1, 3-1,0-TamanhoDaLinhaMenosTamanhoDaChave]),
+
+seq(Vars,[],Ar2):- length(Vars,L),(count(0,Vars,#=,L) #\/ seq(Vars,Ar2,Ar2)). 
+seq([Hvars | Tvars], [Hargs | Targs], Array2):-
+	((Hvars #= 0 #/\ NewArray #= [Hargs | Targs]) #\/
+	(Hvars #= Hargs #/\ NewArray #= Targs)),
+	seq(Tvars, NewArray,Array2).
 
 makeSequence(Vars):-
 	automaton(Vars,
