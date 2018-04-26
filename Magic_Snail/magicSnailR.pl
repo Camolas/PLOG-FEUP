@@ -80,7 +80,6 @@ magicSnail2(N,Keys,Matrix):-
 	makeSequence(SpiralList),
 	%labeling
 	labeling([],RevSpiralList),
-	fd_statitics,
 	%display
 	displayMatrix(Matrix), nl, nl,
 	write(SpiralList).
