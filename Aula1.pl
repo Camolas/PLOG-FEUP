@@ -53,8 +53,8 @@ parent(michael,ella).
 parent(sara,ella).
 
 % Questions
-parent(X,michael).
-parent(aldo,Y).
+%parent(X,michael).
+%parent(aldo,Y).
 %RC2
 pilot(lamb).
 pilot(besenyei).
@@ -87,12 +87,32 @@ gates(istanbul,9).
 gates(budapest,6).
 gates(porto,5).
 %Questions
-%winner(porto,P). %isto esta a ser atribuído como um facto.., a dizer que toda a gente ganhou no porto.. daí o erro!
-twinner(R,T):-winner(R,P),team(T,P).
+%winner(porto,P). %isto esta a ser atribuído como um facto.., a dizer que toda a gente ganhou no porto.. daí o erro! a)
+twinner(R,T):-winner(R,P),team(T,P). % b)
+%winners(P):-winner(R1,P),winner(R2,P),R2\=R1.
+pilot2V(P):-
+	winner(R1,P),winner(R2,P),R2@>R1. % podia fazer \= mas quero que não se repita o mesmo vencedor (mangold)
+pilotVts(Pilotos):-
+	setof(P,pilot2V(P),Pilotos). %só retorna 1 do mesmo assim.. no formato de lista
 % d)gates(C,N),N>8.   % @> @< @>= @=< 
 % gates('Porto',5). os facto nunca tem variável!! pouco provável algo de errado ou porto se colocar Porto é como se tivesse um X
 %@< %para não ter simétricos, alfabeticamente menor que ... e daí aparecer somente 1
-%error twinner(porto,T):-winner(porto,P),team(T,P).
+%error twinner(porto,T):-winner(porto,P),team(T,P). 
+%e) plane(X,Y), X\=edge540.   
+%e) plane(_X,Y), _X\=edge540.
+pilotsnotedge(P):-plane(X,P),X\=edge540.
+
+%RC3
+% Knowledge Base
+book(osmaias).
+author(osmaias,ecaqueiroz).
+language(osmaias,portugues).
+language(osmaias,ingles).
+booktype(osmaias,romance).
+booktype(osmaias,fiction).
+nationality(ecaqueiroz,portugues).
+
+
 
 aluno(joao, paradigmas).
 aluno(maria, paradigmas).
@@ -107,3 +127,30 @@ professor(pedro, lab2).
 funcionario(pedro, ist).
 funcionario(ana_paula, feup).
 funcionario(carlos, feup).
+
+ligado(a,b). ligado(f,i).
+ligado(a,c). ligado(f,j).
+ligado(b,d). ligado(f,k).
+ligado(b,e). ligado(g,l).
+ligado(b,f). ligado(g,m).
+ligado(c,g). ligado(k,n).
+ligado(d,h). ligado(l,o).
+ligado(d,i). ligado(i,f). 
+
+pesq-prof(Ef,Ef,[Ef]).
+pesq-prof(E,Ef,[E|Ef],[E|Es]):-
+		ligado(E,E1),%dou um passo no meu grafo
+		pesq-prof(E1,Ef,Es).
+		
+		
+pp_sc(E, Visit, Ef, S):-
+	ligado(E,E1),
+	\+ member(E1,Visit),
+	pp_sc(E1,[E1|Visit],Ef,S).
+	%que é 
+	
+	%use_module(library(lists)).
+	%[a,b,d,i]
+	%acrescentar um elemento no final da lista é muito fácil!
+	
+	[Ei|[i,d,b,a]]
